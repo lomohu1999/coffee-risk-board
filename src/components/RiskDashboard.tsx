@@ -189,8 +189,8 @@ const ContractAnalysis = ({ contract }: any) => {
 
   return (
     <div className="mb-16">
-      <div className="flex flex-col xl:flex-row xl:items-start justify-between mb-10 gap-x-12 gap-y-6">
-        <div className="shrink-0">
+      <div className="flex flex-col mb-10 gap-y-8">
+        <div className="w-full">
           <div className="flex items-center gap-3 mb-2">
             <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded uppercase tracking-wider">Closed Contract</span>
             <h2 className="text-3xl font-black text-slate-900 tracking-tight">{contract.symbol} 期货合约复盘分析</h2>
@@ -208,7 +208,7 @@ const ContractAnalysis = ({ contract }: any) => {
           </div>
         </div>
         
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
            <KPIModule 
              title="大盘均价基准 (Market Benchmark)"
              absolute={marketAbsolute}
@@ -357,9 +357,9 @@ const ContractAnalysis = ({ contract }: any) => {
         {/* Ambient highlight effect */}
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px] group-hover:bg-blue-600/10 transition-all"></div>
         
-        <h3 className="text-base font-bold text-white/90 mb-8 flex items-center gap-3 relative z-10">
-          <AlertTriangle size={24} className="text-amber-400" /> 战略风险指标回测分析
-          <span className="text-xs font-normal text-white/40 uppercase tracking-[0.2em] ml-4 font-mono">Strategic Risk Pillars</span>
+        <h3 className="text-lg font-black text-amber-400 mb-8 flex items-center gap-3 relative z-10">
+          <AlertTriangle size={24} /> 战略风险指标回测分析
+          <span className="text-xs font-bold text-blue-400 uppercase tracking-[0.2em] ml-4 font-mono px-2 py-1 bg-blue-400/10 rounded">Strategic Risk Pillars</span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
           <RiskMetricBox 
@@ -494,78 +494,49 @@ const ExposureView = () => {
               </div>
            </div>
            
-           <div className="w-full h-[320px]">
+           <div className="w-full h-[280px]">
               <ResponsiveContainer width="100%" height="100%">
                   <BarChart 
                     data={outerData} 
                     layout="vertical" 
-                    margin={{ top: 5, right: 80, left: 40, bottom: 5 }}
+                    margin={{ top: 5, right: 60, left: 40, bottom: 5 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
                     <XAxis type="number" hide />
                     <YAxis 
                       dataKey="name" 
                       type="category" 
-                      fontSize={12} 
+                      fontSize={11} 
                       fontWeight="bold" 
                       axisLine={false} 
                       tickLine={false} 
                       width={80}
+                      tick={{ fill: '#334155' }}
                     />
-                    <Tooltip 
-                      cursor={{ fill: 'transparent' }}
-                      content={({ active, payload }: any) => {
-                        if (active && payload && payload.length) {
-                          const data = payload[0].payload;
-                          return (
-                            <div className="bg-slate-900 text-white p-3 shadow-xl rounded-lg border border-white/10">
-                              <p className="text-[10px] font-bold text-slate-400 uppercase mb-1">{data.name}</p>
-                              <p className="text-sm font-black">{Math.round(data.amount / 100)} 百万元</p>
-                              <p className="text-xs text-blue-400 font-bold">{data.percentage}%</p>
-                            </div>
-                          );
-                        }
-                        return null;
-                      }}
-                    />
+                    <Tooltip cursor={{ fill: 'transparent' }} content={<PieTooltip />} />
                     <Bar 
                       dataKey="amount" 
                       radius={[0, 4, 4, 0]} 
-                      barSize={32}
+                      barSize={24}
                     >
                       {outerData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
-                      {/* Custom labels inside or beside bars */}
-                      <LabelList dataKey="percentage" position="right" content={(props: any) => {
-                        const { x, y, width, value } = props;
-                        return (
-                          <text x={x + width + 10} y={y + 20} fill="#64748b" fontSize={12} fontWeight="bold">
-                            {value}%
-                          </text>
-                        );
-                      }} />
                     </Bar>
                   </BarChart>
               </ResponsiveContainer>
            </div>
            
-           <div className="w-full grid grid-cols-1 gap-3 mt-10">
+           <div className="w-full grid grid-cols-2 gap-3 mt-6">
               {outerData.map((item, idx) => (
-                 <div key={idx} className="flex items-center gap-4 p-4 rounded-xl bg-blue-50/40 border border-blue-100/50">
-                    <div className="w-4 h-4 rounded shadow-sm shrink-0" style={{backgroundColor: item.color}}></div>
-                    <div className="flex-1 flex justify-between items-center">
-                       <span className="text-sm font-black text-slate-700">{item.name}</span>
-                       <div className="flex items-center gap-6">
-                          <div className="text-right">
-                             <p className="text-xs font-bold text-slate-400 uppercase">金额</p>
-                             <p className="text-sm font-black text-slate-800">{Math.round(item.amount / 100).toLocaleString()} 百万</p>
-                          </div>
-                          <div className="text-right min-w-[60px]">
-                             <p className="text-xs font-bold text-slate-400 uppercase">占比</p>
-                             <p className="text-sm font-black text-blue-700">{item.percentage}%</p>
-                          </div>
-                       </div>
+                 <div key={idx} className="flex flex-col gap-1 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                    <div className="flex items-center gap-2 mb-1">
+                       <div className="w-3 h-3 rounded-full" style={{backgroundColor: item.color}}></div>
+                       <span className="text-xs font-black text-slate-700">{item.name}</span>
+                    </div>
+                    <div className="flex justify-between items-baseline">
+                       <p className="text-xs font-bold text-blue-600">{item.percentage}%</p>
+                       <p className="text-[10px] font-bold text-slate-400">{Math.round(item.amount / 100).toLocaleString()}M</p>
                     </div>
                  </div>
               ))}
@@ -579,45 +550,43 @@ const ExposureView = () => {
 export default function RiskDashboard() {
   return (
     <div className="min-h-screen pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
-      <header className="mb-16">
-        <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-200 pb-10 gap-8">
-          <div>
-            <h1 className="text-5xl font-black text-slate-900 tracking-tighter mb-4">
-              亿丰咖啡生豆采购<span className="text-blue-600">风险管理</span>看板
-            </h1>
-            <p className="text-lg text-slate-500 font-medium max-w-3xl leading-relaxed">
-              实时追踪期货头寸执行状态与敞口结构。风控策略：空头基差合同。通过点价回补平仓，深度监控大盘均价偏离度及极端回撤风险。
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full lg:w-auto">
-             <div className="px-6 py-5 bg-white rounded-2xl shadow-sm border border-slate-200 hover:border-blue-400 transition-colors">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.15em] mb-2 flex items-center gap-2">
-                   <Package size={14} className="text-slate-300" /> 总体计划额
-                </p>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-black text-slate-900">{Math.round(SUMMARY_STATS.totalPlanned / 100).toLocaleString()}</span>
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-tighter">百万元</span>
-                </div>
-             </div>
-             <div className="px-6 py-5 bg-blue-50/50 rounded-2xl shadow-sm border border-blue-100 hover:border-blue-400 transition-colors">
-                <p className="text-xs font-bold text-blue-400 uppercase tracking-[0.15em] mb-2 flex items-center gap-2">
-                   <CheckCircle2 size={14} className="text-blue-300" /> 已关闭敞口
-                </p>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-black text-blue-600">{Math.round(SUMMARY_STATS.closedExposure / 100).toLocaleString()}</span>
-                  <span className="text-xs font-bold text-blue-400 uppercase tracking-tighter">百万元</span>
-                </div>
-             </div>
-             <div className="px-6 py-5 bg-red-50/50 rounded-2xl shadow-sm border border-red-100 hover:border-red-400 transition-colors sm:col-span-2 lg:col-span-1">
-                <p className="text-xs font-bold text-red-400 uppercase tracking-[0.15em] mb-2 flex items-center gap-2">
-                   <AlertTriangle size={14} className="text-red-300" /> 当前敞口额
-                </p>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-black text-red-600">{Math.round(SUMMARY_STATS.currentExposure / 100).toLocaleString()}</span>
-                  <span className="text-xs font-bold text-red-400 uppercase tracking-tighter">百万元</span>
-                </div>
-             </div>
-          </div>
+      <header className="mb-16 border-b border-slate-200 pb-10">
+        <div className="mb-10">
+          <h1 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tighter mb-4">
+            亿丰咖啡生豆采购<span className="text-blue-600">风险管理</span>看板
+          </h1>
+          <p className="text-lg text-slate-500 font-medium max-w-4xl leading-relaxed">
+            实时追踪期货头寸执行状态与敞口结构。风控策略：空头基差合同。通过点价回补平仓，深度监控大盘均价偏离度及极端回撤风险。
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+           <div className="px-6 py-5 bg-white rounded-2xl shadow-sm border border-slate-200 hover:border-blue-400 transition-colors">
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.15em] mb-2 flex items-center gap-2">
+                 <Package size={14} className="text-slate-300" /> 总体计划额
+              </p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-black text-slate-900">{Math.round(SUMMARY_STATS.totalPlanned / 100).toLocaleString()}</span>
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-tighter">百万元</span>
+              </div>
+           </div>
+           <div className="px-6 py-5 bg-blue-50/50 rounded-2xl shadow-sm border border-blue-100 hover:border-blue-400 transition-colors">
+              <p className="text-xs font-bold text-blue-400 uppercase tracking-[0.15em] mb-2 flex items-center gap-2">
+                 <CheckCircle2 size={14} className="text-blue-300" /> 已关闭敞口
+              </p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-black text-blue-600">{Math.round(SUMMARY_STATS.closedExposure / 100).toLocaleString()}</span>
+                <span className="text-xs font-bold text-blue-400 uppercase tracking-tighter">百万元</span>
+              </div>
+           </div>
+           <div className="px-6 py-5 bg-red-50/50 rounded-2xl shadow-sm border border-red-100 hover:border-red-400 transition-colors sm:col-span-2 lg:col-span-1">
+              <p className="text-xs font-bold text-red-400 uppercase tracking-[0.15em] mb-2 flex items-center gap-2">
+                 <AlertTriangle size={14} className="text-red-300" /> 当前敞口额
+              </p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-black text-red-600">{Math.round(SUMMARY_STATS.currentExposure / 100).toLocaleString()}</span>
+                <span className="text-xs font-bold text-red-400 uppercase tracking-tighter">百万元</span>
+              </div>
+           </div>
         </div>
       </header>
 
