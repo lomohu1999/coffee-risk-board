@@ -154,7 +154,7 @@ export const CLOSED_CONTRACTS = [
     ],
     kpi: [
       { label: '低于大盘均价 2% KPI', status: '1', result: '达成率 260%' },
-      { label: '低于竞对 KPI', status: '0', result: '未达成，落后 2.1 美分' }
+      { label: '低于竞对 KPI', status: '0', result: '竞对287.5，落后2.1美分' }
     ],
     risk: {
       maxDrawdown: -33.63,
@@ -190,7 +190,7 @@ export const CLOSED_CONTRACTS = [
     ],
     kpi: [
       { label: '低于大盘均价 2% KPI', status: '1', result: '达成率 160%' },
-      { label: '低于竞对 KPI', status: '1', result: '达成' }
+      { label: '低于竞对 KPI', status: '1', result: '竞对3538.1，领先143.6美元' }
     ],
     risk: {
       maxDrawdown: -297.00,
@@ -211,13 +211,13 @@ export const CLOSED_CONTRACTS = [
 ];
 
 export const SUMMARY_STATS = {
-  totalPlanned: 39431, // 34518 + 4913
+  totalPlanned: 34192, // 29279 + 4913
   currentExposure: 4913,
   closedExposure: 878.5 + 243.4
 };
 
 export const EXPOSURE_DATA = {
-  fixedPrice: 34518,
+  fixedPrice: 29279,
   riskExposure: 4913,
   structure: [
     { name: 'KCN26', percentage: 46, amount: 2238 },
