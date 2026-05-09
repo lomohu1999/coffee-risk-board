@@ -208,7 +208,7 @@ const ContractAnalysis = ({ contract }: any) => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+        <div className="grid grid-cols-1 gap-6 w-full">
            <KPIModule 
              title="大盘均价基准 (Market Benchmark)"
              absolute={marketAbsolute}
