@@ -413,7 +413,7 @@ const PieTooltip = ({ active, payload }: any) => {
 
 const ExposureView = () => {
   const pieData = [
-    { name: '一口价采购', value: EXPOSURE_DATA.fixedPrice, color: '#0f172a', percentage: 85.6 },
+    { name: '已定价采购', value: EXPOSURE_DATA.fixedPrice, color: '#0f172a', percentage: 85.6 },
     { name: '风险敞口', value: EXPOSURE_DATA.riskExposure, color: '#ef4444', percentage: 14.4 }
   ];
 
